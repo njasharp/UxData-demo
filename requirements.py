@@ -1,4 +1,4 @@
 streamlit
-Groq
+groq
 pandas
 altair
