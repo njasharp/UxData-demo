@@ -102,6 +102,37 @@ def create_user_profile() -> Optional[Dict[str, Any]]:
         }
     return None
 
+def generate_seo_aso_suggestions(user_profile: Dict[str, Any]) -> Dict[str, List[str]]:
+    seo_suggestions = []
+    aso_suggestions = []
+
+    # SEO Suggestions based on user profile
+    genre = user_profile['Preferred Genre']
+    selected_features = user_profile['Selected Features']
+    
+    if genre == 'Casual':
+        seo_suggestions.append("Target keywords like 'free casual games', 'best casual games', 'mobile games to relax'.")
+    elif genre == 'RPG':
+        seo_suggestions.append("Optimize for 'top RPG mobile games', 'best free RPGs', 'immersive RPG games'.")
+    elif genre == 'Puzzle':
+        seo_suggestions.append("Use keywords such as 'brain games', 'best puzzle games', 'mobile puzzle games'.")
+    
+    if 'Game Progression' in selected_features:
+        seo_suggestions.append("Include keywords related to 'level-based games', 'game progression mechanics'.")
+    
+    # ASO Suggestions based on user profile
+    if 'Special Promotions' in user_profile['Selected Event Types']:
+        aso_suggestions.append("Utilize limited-time events in app description to encourage installs.")
+        aso_suggestions.append("Highlight special promotions and seasonal events in the app’s title or subtitle.")
+    
+    if 'Social Interaction' in selected_features:
+        aso_suggestions.append("Mention social features like multiplayer and leaderboards in the description.")
+
+    return {
+        "SEO Suggestions": seo_suggestions,
+        "ASO Suggestions": aso_suggestions
+    }
+
 def generate_action_plan_with_features(user_profile: Dict[str, Any]) -> Dict[str, Any]:
     action_plan = {
         "game_recommendations": [],
@@ -166,8 +197,24 @@ def display_ai_agent_results(action_plan: Dict[str, Any], user_profile: Dict[str
     else:
         st.write("*No strategies or best practices available based on the profile.*")
 
+    # Generate and display SEO and ASO suggestions
+    seo_aso_suggestions = generate_seo_aso_suggestions(user_profile)
+    st.subheader("SEO and ASO Suggestions")
+    
+    st.write("**SEO Suggestions**:")
+    if seo_aso_suggestions["SEO Suggestions"]:
+        st.write("\n".join([f"- {suggestion}" for suggestion in seo_aso_suggestions["SEO Suggestions"]]))
+    else:
+        st.write("*No SEO suggestions available based on the profile.*")
+
+    st.write("**ASO Suggestions**:")
+    if seo_aso_suggestions["ASO Suggestions"]:
+        st.write("\n".join([f"- {suggestion}" for suggestion in seo_aso_suggestions["ASO Suggestions"]]))
+    else:
+        st.write("*No ASO suggestions available based on the profile.*")
+
     # Display the full game strategy plan in a readable format
-    full_results = f"User Profile:\n{user_profile}\n\nGame Recommendations:\n{action_plan['game_recommendations']}\n\nStrategies and Best Practices:\n{action_plan['strategies']}"
+    full_results = f"User Profile:\n{user_profile}\n\nGame Recommendations:\n{action_plan['game_recommendations']}\n\nStrategies and Best Practices:\n{action_plan['strategies']}\n\nSEO and ASO Suggestions:\n{seo_aso_suggestions}"
     
     st.subheader("Full Game Strategy Plan")
     st.write(full_results)  # Display full results on the page
