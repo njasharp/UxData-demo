@@ -67,7 +67,7 @@ def expand_strategies_with_llm(model: str, system_prompt: str, strategy: str, te
         return f"Error generating strategy expansion: {str(e)}"
 
 def create_user_profile() -> Optional[Dict[str, Any]]:
-    st.header("User Assessment Questionnaire")
+    st.header("User Assessment Questionnaire with AI-driven strategies and marketing insights.")
     with st.form(key='assessment_form'):
         age = st.slider("How old are you?", 10, 60, 25)
         gaming_frequency = st.selectbox("How often do you play mobile games?", ["Daily", "Weekly", "Monthly", "Rarely"])
